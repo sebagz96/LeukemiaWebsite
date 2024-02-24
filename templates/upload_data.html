@@ -1,0 +1,84 @@
+{% extends 'component.html' %}
+{% block content %}
+
+    <main
+      class="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md w-1/2"
+    >
+      <h2 class="text-2xl font-semibold mb-4 text-center">Análisis de Linfocitos B</h2>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+          <label for="image" class="block text-gray-700 font-medium"
+            >Seleciona una imagen</label
+          >
+          <input
+            type="file"
+            name="image"
+            id="image"
+            class="mt-1 p-2 border rounded-md w-full"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="first_name" class="block text-gray-700 font-medium"
+            >Nombre</label
+          >
+          <input
+            type="text"
+            name="first_name"
+            id="first_name"
+            class="mt-1 p-2 border rounded-md w-full"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="last_name" class="block text-gray-700 font-medium"
+            >Apellido</label
+          >
+          <input
+            type="text"
+            name="last_name"
+            id="last_name"
+            class="mt-1 p-2 border rounded-md w-full"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Analizar
+        </button>
+      </form>
+
+      <!-- Uploaded Image Display -->
+      <div class="mt-8 bg-gray-200 p-4 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Previsualización de Imagen</h2>
+        <img
+          id="uploaded-image"
+          src=""
+          style="display: none; max-width: 100%"
+          alt="Uploaded Image"
+        />
+      </div>
+    </main>
+
+    <!-- Retain Existing Script for Image Display -->
+    <script>
+      document
+        .querySelector('input[type="file"]')
+        .addEventListener("change", function () {
+          const fileInput = this;
+          if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              uploadedImage.src = e.target.result;
+              uploadedImage.style.display = "block";
+
+              // Redirige a la página de resultado
+              window.location.href = "/result?result=Loading...";
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+          }
+        });
+    </script>
+
+{% endblock %}

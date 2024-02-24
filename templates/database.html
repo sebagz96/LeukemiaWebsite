@@ -1,0 +1,117 @@
+{% extends 'component.html' %}
+{% block content %}
+
+    <div class="lg:pl-4 lg:flex lg:flex-col flex-grow">
+      <main class="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
+              <div class="flex">
+                <div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+                <div>
+                  <p class="font-bold"1>{{message}}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <h2 class="text-2xl font-semibold mb-4 text-black">Resultados</h2>
+
+        <!-- Search input -->
+        <!--<input
+              type="text"
+              id="searchInput"
+              placeholder="Buscar por resultado..."
+              class="p-2 border rounded-md mb-4"
+            />-->
+
+        <table id="myTable" class="display text-black">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Resultado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in results %}
+            <tr>
+              <td>{{ result.id }}</td>
+              <td>{{ result.patient_first_name }}</td>
+              <td>{{ result.patient_last_name }}</td>
+              <td>{{ result.classification_result }}</td>
+              <td>{{ result.registration_date.strftime('%Y-%m-%d')[:10] }}</td>
+              <td>
+                <a
+                  class=""
+                  href="/info-paciente/{{result.id}}"
+                  tooltip="Ver Registro"
+                  ><i class="fa-regular fa-eye"></i> Ver
+                </a>
+                |
+                <a href="{{ url_for('eliminarRegistro', id = result.id)}}"
+                  ><i class="fa-regular fa-trash-can"></i> Eliminar</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Display results as cards -->
+        <!--<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {% for result in results %}
+              <div class="bg-gray-200 p-4 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-2">
+                  Paciente: {{ result.patient_first_name }} {{
+                  result.patient_last_name }}
+                </h3>
+                <p class="mb-2">
+                  Resultado de la clasificación: {{ result.classification_result
+                  }}
+                </p>
+                
+                <p class="mb-2">Fecha: {{ result.registration_date.strftime('%Y-%m-%d')[:10] }}</p>
+                <a
+                  href="{{ result.image_path }}"
+                  download="patient_image.jpg"
+                  class="text-blue-500 hover:underline"
+                  >Download Image</a
+                >
+              </div>
+              {% endfor %}
+            </div>-->
+      </main>
+    </div>
+
+    <script>
+      new DataTable("#myTable");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const results = document.querySelectorAll(".searchable-result");
+
+        searchInput.addEventListener("input", function () {
+          const searchTerm = searchInput.value.toLowerCase();
+
+          results.forEach((result) => {
+            const classification = result
+              .querySelector("p")
+              .textContent.toLowerCase();
+
+            if (classification.includes(searchTerm)) {
+              result.style.display = "block";
+            } else {
+              result.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+
+{% endblock %}

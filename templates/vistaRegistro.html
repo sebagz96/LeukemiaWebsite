@@ -1,0 +1,40 @@
+{% extends 'component.html' %}
+{% block content %}
+
+    {% if(dataInfo) %} 
+    
+    <div class="flex-grow">
+     
+        <div class="bg-gray-200 flex justify-center items-center py-6 h-screen">
+          <div>
+            <div class="gradiente px-8 py-6 rounded-lg space-y-5 max-w-md">
+              <div class="flex items-center space-x-5 sm:flex-col sm:space-y-5">
+                <h1
+                  class="uppercase text-3xl font-semibold text-white text-center pl-2 sm:font-bold sm:text-gray-800"
+                >
+                {{dataInfo.patient_first_name}} {{dataInfo.patient_last_name}}
+                </h1>
+                {% if(dataInfo.image_path !="") %}
+
+                
+                <img src="/{{ dataInfo.image_path }}" alt="Leukemia" class="h-full w-full" />
+                {% endif %}
+              </div>
+              
+              <p class="text-center text-gray-900">
+                <strong>Resultado: </strong> {{dataInfo.classification_result}}
+              </p>
+              <p class="text-center text-gray-900">
+                <strong>Fecha: </strong>
+                {{dataInfo.registration_date.strftime('%d-%m-%Y')}}
+              </p>
+              
+            </div>
+          </div>
+         
+        </div>
+        
+    </div>
+    {% endif %}
+
+{% endblock %}

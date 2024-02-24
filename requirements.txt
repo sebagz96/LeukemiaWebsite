@@ -1,0 +1,12 @@
+Flask
+scikit-learn
+matplotlib
+pandas
+seaborn
+pillow
+tensorflow
+opencv-python
+tqdm
+requests
+SQLAlchemy
+Flask-Migrate

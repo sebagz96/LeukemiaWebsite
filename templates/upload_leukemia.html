@@ -1,0 +1,49 @@
+{% extends 'component.html' %}
+{% block content %}
+
+        <!-- Main Content -->
+        <main class="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md w-1/2">
+            <h2 class="text-2xl font-semibold mb-4 text-black text-center">Análisis del Estado de la Célula</h2>
+            <form action="/upload_leukemia" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="image" class="block text-gray-700 font-medium">Selecciona una imagen de leucemia</label>
+                    <input type="file" name="image" id="image" class="mt-1 p-2 border rounded-md w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="first_name" class="block text-gray-700 font-medium">Nombre</label>
+                    <input type="text" name="first_name" id="first_name" class="mt-1 p-2 border rounded-md w-full" required>
+                </div>
+                <div class="mb-4">
+                    <label for="last_name" class="block text-gray-700 font-medium">Apellido</label>
+                    <input type="text" name="last_name" id="last_name" class="mt-1 p-2 border rounded-md w-full" required>
+                </div>
+                <!-- Hidden input field to store classification result -->
+                <input type="hidden" id="classification_result" name="classification_result">
+                <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600">Enviar.</button>
+            </form>
+        </main>
+
+        <!-- JavaScript block -->
+        <script>
+            document.querySelector('input[type="file"]').addEventListener('change', function() {
+                const fileInput = this;
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadedImage.src = e.target.result;
+                        uploadedImage.style.display = 'block';
+
+                        // Always set the classification result as 'none' for now
+                        const classificationResult = 'none';
+
+                        // Set the value of the hidden input field
+                        document.getElementById('classification_result').value = classificationResult;
+
+                        // Redirect to /result_leukemia
+                        window.location.href = `/result_leukemia?result=${classificationResult}`;
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+        </script>
+{% endblock %}
